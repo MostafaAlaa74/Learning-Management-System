@@ -1,65 +1,178 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Learning Management System (LMS) API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A robust, scalable RESTful API for a modern Learning Management System built with Laravel. This API provides comprehensive functionality for online education platforms, including course management, user enrollment, progress tracking, and secure authentication.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 🔐 Authentication & Security
+- **JWT-based Authentication** using Laravel Sanctum
+- **Role-based Access Control** (Student, Instructor, Admin)
+- **Secure password management** with change password functionality
+- **Rate limiting** on authentication endpoints
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 📖 Course Management
+- **Full CRUD operations** for courses and lessons
+- **Nested resources** for intuitive course-lesson relationships
+- **Search functionality** to find courses by keywords
+- **Structured content organization**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👥 User Management
+- **User registration and profile management**
+- **Course enrollment system**
+- **Progress tracking** for completed lessons
+- **Role-based permissions** for different user types
 
-## Learning Laravel
+### 📁 File Handling
+- **Multi-file upload support** for lesson attachments
+- **Video content management** for lesson videos
+- **File type validation** for security
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠 Technology Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **PHP 8.1+** with Laravel 10+
+- **Laravel Sanctum** for API authentication
+- **MySQL/PostgreSQL** database
+- **Eloquent ORM** for database operations
+- **API Resource** transformations
+- **File Storage** integration
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📦 Installation
 
-## Laravel Sponsors
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd lms-api
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. Install dependencies:
+```bash
+composer install
+```
 
-### Premium Partners
+3. Configure environment:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4. Configure database in `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=lms_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Contributing
+5. Run migrations:
+```bash
+php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. Install Sanctum:
+```bash
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate
+```
 
-## Code of Conduct
+7. Start the development server:
+```bash
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📚 API Endpoints
 
-## Security Vulnerabilities
+### Authentication Routes
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | User login |
+| POST | `/api/auth/logout` | User logout (authenticated) |
+| POST | `/api/auth/reset-password` | Reset password |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Course Routes
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/api/courses` | List all courses | Public |
+| POST | `/api/courses` | Create a new course | Instructor |
+| GET | `/api/courses/{id}` | Get course details | Public |
+| PUT | `/api/courses/{id}` | Update course | Instructor |
+| DELETE | `/api/courses/{id}` | Delete course | Instructor |
+| GET | `/api/courses/search/{keyword}` | Search courses | Public |
 
-## License
+### Lesson Routes
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/api/courses/{course}/lessons` | Get course lessons | Public |
+| POST | `/api/courses/{course}/lessons` | Create lesson | Instructor |
+| GET | `/api/lessons/{id}` | Get lesson details | Public |
+| PUT | `/api/lessons/{id}` | Update lesson | Instructor |
+| DELETE | `/api/lessons/{id}` | Delete lesson | Instructor |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# Learning-Management-System
->>>>>>> 3b7e7e5cdc5a8d41efdc5a369216e3df25eb784c
+
+## 🔐 Authentication
+
+All protected endpoints require an authentication token in the header:
+
+```http
+Authorization: Bearer {api_token}
+```
+
+### Registration Example
+```bash
+curl -X POST http://localhost:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "password_confirmation": "password123"
+  }'
+```
+
+### Login Example
+```bash
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+## 🗄 Database Structure
+
+### Key Tables
+- **users** - User accounts and profiles
+- **courses** - Course information
+- **lessons** - Lesson content
+- **enrollments** - Course enrollments
+
+### Relationships
+- Users can enroll in multiple courses (Many-to-Many)
+- Courses contain multiple lessons (One-to-Many)
+- Users can complete multiple lessons (Many-to-Many)
+
+## 🔮 Future Enhancements
+
+- [ ] WebSocket integration for real-time notifications
+- [ ] Video streaming with adaptive bitrate
+- [ ] Mobile app support
+- [ ] Gamification elements (badges, points)
+- [ ] Third-party integrations (Zoom, Google Classroom)
+- [ ] Advanced analytics and reporting
+- [ ] Certificate generation
+- [ ] Discussion forums and chat
+
+## 🤝 Contributing
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+**Note**: This API is currently in active development. Some features may change or be added in future versions. Always check the release notes for updates.
